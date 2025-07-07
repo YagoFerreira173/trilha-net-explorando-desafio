@@ -2,58 +2,67 @@ namespace DesafioProjetoHospedagem.Models
 {
     public class Reserva
     {
+        // Lista de hóspedes cadastrados na reserva
         public List<Pessoa> Hospedes { get; set; }
+
+        // Suíte (quarto) que foi escolhida para essa reserva
         public Suite Suite { get; set; }
+
+        // Quantidade de dias que a suíte foi reservada
         public int DiasReservados { get; set; }
 
+        // Construtor padrão (vazio) — permite criar uma reserva sem passar nenhum dado inicial
         public Reserva() { }
 
+        // Construtor que já define quantos dias a reserva vai durar
         public Reserva(int diasReservados)
         {
             DiasReservados = diasReservados;
         }
 
+        // Método para cadastrar a suíte que foi escolhida para essa reserva
+        public void CadastrarSuite(Suite suite)
+        {
+            Suite = suite; // Armazena a suíte passada como parâmetro
+        }
+
+        // Método para cadastrar os hóspedes na reserva
         public void CadastrarHospedes(List<Pessoa> hospedes)
         {
-            // TODO: Verificar se a capacidade é maior ou igual ao número de hóspedes sendo recebido
-            // *IMPLEMENTE AQUI*
-            if (true)
+            // Verifica se o número de hóspedes cabe na suíte
+            if (hospedes.Count <= Suite.Capacidade)
             {
+                // Se couber, salva a lista de hóspedes
                 Hospedes = hospedes;
             }
             else
             {
-                // TODO: Retornar uma exception caso a capacidade seja menor que o número de hóspedes recebido
-                // *IMPLEMENTE AQUI*
+                // Se não couber, lança uma exceção dizendo que ultrapassou a capacidade
+                throw new ArgumentException("Número de hóspedes excede a capacidade da suíte.");
             }
         }
 
-        public void CadastrarSuite(Suite suite)
-        {
-            Suite = suite;
-        }
-
+        // Método que retorna quantas pessoas estão hospedadas nesta reserva
         public int ObterQuantidadeHospedes()
         {
-            // TODO: Retorna a quantidade de hóspedes (propriedade Hospedes)
-            // *IMPLEMENTE AQUI*
-            return 0;
+            // Se a lista não for nula, retorna a quantidade de hóspedes
+            // Caso contrário, retorna 0
+            return Hospedes != null ? Hospedes.Count : 0;
         }
 
+        // Método que calcula o valor total da diária da reserva
         public decimal CalcularValorDiaria()
         {
-            // TODO: Retorna o valor da diária
-            // Cálculo: DiasReservados X Suite.ValorDiaria
-            // *IMPLEMENTE AQUI*
-            decimal valor = 0;
+            // Calcula o valor total multiplicando os dias pela diária da suíte
+            decimal valor = DiasReservados * Suite.ValorDiaria;
 
-            // Regra: Caso os dias reservados forem maior ou igual a 10, conceder um desconto de 10%
-            // *IMPLEMENTE AQUI*
-            if (true)
+            // Se a reserva for de 10 dias ou mais, aplica um desconto de 10%
+            if (DiasReservados >= 10)
             {
-                valor = 0;
+                valor *= 0.90m; // Equivale a tirar 10% (ou multiplicar por 90%)
             }
 
+            // Retorna o valor final com ou sem desconto
             return valor;
         }
     }
